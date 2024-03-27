@@ -1,0 +1,18 @@
+{
+  "en": {
+    "These are the files:": "These are the files:",
+    "The number of files exceeds the limit of": "The number of files exceeds the limit of",
+    "Starting writing output file": "Starting writing output file",
+    "Writing file": "Writing file",
+    "Finished writing output file": "Finished writing output file",
+    "Usage": "Usage: node folder2txt.js folder=<folder path> output=<output path> [lang=es]"
+  },
+  "es": {
+    "These are the files:": "Estos son los archivos:",
+    "The number of files exceeds the limit of": "El número de archivos supera el límite de",
+    "Starting writing output file": "Iniciando escritura de archivo output",
+    "Writing file": "Escribiendo archivo",
+    "Finished writing output file": "Escritura finalizada en archivo output",
+    "Usage": "Uso: node folder2txt.js folder=<ruta del folder> output=<ruta del output> [lang=es]"
+  }
+}

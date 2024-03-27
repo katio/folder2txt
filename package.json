@@ -1,0 +1,11 @@
+{
+  "name": "folder2txt",
+  "version": "1.0.0",
+  "description": "Folder file contents to txt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Echavarria, Johann",
+  "license": "ISC"
+}
