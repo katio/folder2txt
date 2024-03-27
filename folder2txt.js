@@ -4,6 +4,13 @@ const path = require('path');
 const MAX_FILES = 1000;
 
 const i18n = require('./i18n.json');
+const ignoreConfig = require('./ignore.json');
+
+function shouldIgnore(filePath, isFolder = false) {
+    const relativePath = path.relative(process.cwd(), filePath);
+    const { folders, files } = ignoreConfig;
+    return (isFolder && folders.includes(relativePath)) || (!isFolder && files.includes(path.basename(filePath)));
+}
 
 function countFiles(folderPath) {
     let count = 0;
@@ -11,22 +18,21 @@ function countFiles(folderPath) {
     files.forEach(file => {
         const filePath = path.join(folderPath, file);
         const stats = fs.statSync(filePath);
-        if (stats.isFile()) {
+        if (stats.isFile() && !shouldIgnore(filePath)) {
             count++;
-        } else if (stats.isDirectory()) {
+        } else if (stats.isDirectory() && !shouldIgnore(filePath, true)) {
             count += countFiles(filePath);
         }
     });
     return count;
 }
 
-function processFolder({folderPath, outputPath, lang = 'en'}){
+function processFolder({ folderPath, outputPath, lang = 'en' }) {
     const filesCount = countFiles(folderPath);
     if (filesCount > MAX_FILES) {
         console.log(`${i18n[lang]['The number of files exceeds the limit of']} ${MAX_FILES}`);
         return;
     }
-    console.log({i18n, lang})
     console.log(`${i18n[lang]['Starting writing output file']} ${outputPath}`);
     const output = fs.createWriteStream(outputPath);
 
@@ -43,9 +49,9 @@ function processFolder({folderPath, outputPath, lang = 'en'}){
         files.forEach(file => {
             const filePath = path.join(folderPath, file);
             const stats = fs.statSync(filePath);
-            if (stats.isFile()) {
+            if (stats.isFile() && !shouldIgnore(filePath)) {
                 processFile(filePath);
-            } else if (stats.isDirectory()) {
+            } else if (stats.isDirectory() && !shouldIgnore(filePath, true)) {
                 processFolderRecursive(filePath);
             }
         });
@@ -67,4 +73,4 @@ const outputPath = process.argv.find(arg => arg.startsWith('output=')).split('='
 const lang = process.argv.find(arg => arg.startsWith('lang='))?.split('=')[1];
 
 
-processFolder({folderPath, outputPath, lang});
+processFolder({ folderPath, outputPath, lang });
