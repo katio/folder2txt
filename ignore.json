@@ -1,4 +1,4 @@
 {
   "folders": ["node_modules", ".git"],
-  "files": [".DS_Store"]
+  "files": [".DS_Store", "package-lock.json", ".gitignore"]
 }

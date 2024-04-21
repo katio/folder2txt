@@ -7,15 +7,16 @@ const i18n = require('./i18n.json');
 const ignoreConfig = require('./ignore.json');
 
 function shouldIgnore(filePath, isFolder = false) {
-    const relativePath = path.relative(process.cwd(), filePath);
+    const folderSeparator = filePath.includes('/') ? '/' : '\\';
+    const fileOrFolderName = filePath.split(folderSeparator).at(-1);
     const { folders, files } = ignoreConfig;
-    return (isFolder && folders.includes(relativePath)) || (!isFolder && files.includes(path.basename(filePath)));
+    return (isFolder && folders.includes(fileOrFolderName)) || (!isFolder && files.includes(fileOrFolderName));
 }
 
 function countFiles(folderPath) {
     let count = 0;
     const files = fs.readdirSync(folderPath);
-    files.forEach(file => {
+    for(let file of files) {
         const filePath = path.join(folderPath, file);
         const stats = fs.statSync(filePath);
         if (stats.isFile() && !shouldIgnore(filePath)) {
@@ -23,14 +24,17 @@ function countFiles(folderPath) {
         } else if (stats.isDirectory() && !shouldIgnore(filePath, true)) {
             count += countFiles(filePath);
         }
-    });
+        if(count > MAX_FILES) {
+            return Infinity;
+        }
+    }
     return count;
 }
 
 function processFolder({ folderPath, outputPath, lang = 'en' }) {
     const filesCount = countFiles(folderPath);
     if (filesCount > MAX_FILES) {
-        console.log(`${i18n[lang]['The number of files exceeds the limit of']} ${MAX_FILES}`);
+        console.log(`(${filesCount}) ${i18n[lang]['The number of files exceeds the limit of']} ${MAX_FILES}`);
         return;
     }
     console.log(`${i18n[lang]['Starting writing output file']} ${outputPath}`);
