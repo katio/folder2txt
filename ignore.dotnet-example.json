@@ -1,0 +1,12 @@
+{
+  "folders": ["node_modules", ".git", "bin", "obj"],
+  "files": [
+    ".DS_Store",
+    "*.dll",
+    "*.exe",
+    "*.pdb",
+    "appsettings*.json",
+    "*.user",
+    "*.Designer.cs"
+  ]
+}
