@@ -6,11 +6,26 @@ const MAX_FILES = 1000;
 const i18n = require('./i18n.json');
 const ignoreConfig = require('./ignore.json');
 
+function matchWildcard(str, pattern) {
+    const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regexPattern = '^' + pattern.split('*').map(escapeRegex).join('.*') + '$';
+    return new RegExp(regexPattern).test(str);
+}
+
 function shouldIgnore(filePath, isFolder = false) {
     const folderSeparator = filePath.includes('/') ? '/' : '\\';
     const fileOrFolderName = filePath.split(folderSeparator).at(-1);
     const { folders, files } = ignoreConfig;
-    return (isFolder && folders.includes(fileOrFolderName)) || (!isFolder && files.includes(fileOrFolderName));
+
+    if (isFolder) {
+        return folders.some(folderPattern =>
+            folderPattern === fileOrFolderName || matchWildcard(fileOrFolderName, folderPattern)
+        );
+    } else {
+        return files.some(filePattern =>
+            filePattern === fileOrFolderName || matchWildcard(fileOrFolderName, filePattern)
+        );
+    }
 }
 
 function countFiles(folderPath) {
