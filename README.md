@@ -33,7 +33,7 @@ node folder2txt.js folder=/c/git/folder2txt/ output=/c/public/out2.txt lang=es
 
 ### Ignore Configuration
 
-You can specify folders and files to ignore during processing by editing the `ignore.json` file. Use the `ignore.example.json` file as a template for adding entries.
+You can specify folders and files to ignore during processing by editing the `ignore.json` file. See examples in the `ignore-json-examples` folder.
 
 #### Example ignore.json
 
@@ -42,6 +42,18 @@ You can specify folders and files to ignore during processing by editing the `ig
   "folders": ["node_modules", ".git"],
   "files": [".DS_Store"]
 }
+```
+You can also use wildcards (*), example:
+```json
+"files": [
+    ".DS_Store",
+    "*.dll",
+    "*.exe",
+    "*.pdb",
+    "appsettings*.json",
+    "*.user",
+    "*.Designer.cs"
+]
 ```
 
 ### Usage

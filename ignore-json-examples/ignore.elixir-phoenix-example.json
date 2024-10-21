@@ -1,0 +1,22 @@
+{
+  "folders": [
+    "node_modules",
+    ".git",
+    "_build",
+    "deps",
+    "assets",
+    "test",
+    ".elixir_ls",
+    "images"
+  ],
+  "files": [
+    ".DS_Store",
+    "package-lock.json",
+    ".gitignore",
+    ".env",
+    ".env.prod",
+    "mix.lock",
+    "erl_crash.dump",
+    "favicon.ico"
+  ]
+}
